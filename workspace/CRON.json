@@ -1,0 +1,25 @@
+{
+  "jobs": [
+    {
+      "id": "daily-check",
+      "name": "Daily Check",
+      "enabled": false,
+      "agent_id": "local-master",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * *",
+        "tz": "Asia/Shanghai"
+      },
+      "target": {
+        "channel": "cli",
+        "peer_id": "cli-user",
+        "to_type": ""
+      },
+      "payload": {
+        "kind": "agent_turn",
+        "message": "Generate a brief daily check-in. Report only useful updates."
+      },
+      "delete_after_run": false
+    }
+  ]
+}

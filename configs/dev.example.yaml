@@ -1,0 +1,111 @@
+llm:
+  provider: openai_compatible
+  base_url: https://api.deepseek.com
+  api_key: ""
+  default_model: deepseek-v4-pro
+  temperature: 0.2
+  max_tokens: 2048
+  fallback_models:
+    - deepseek-chat
+  resilience:
+    enabled: true
+    max_overflow_compactions: 3
+    context_safe_tokens: 180000
+    max_tool_output_chars: 50000
+
+sessions:
+  driver: sqlite
+  path: workspace/aihelper.db
+
+delivery:
+  enabled: true
+  path: workspace/delivery-queue
+  scan_interval_seconds: 1
+  max_retries: 5
+
+heartbeat:
+  enabled: false
+  interval_seconds: 900
+  active_hours:
+    start: 9
+    end: 22
+  agents:
+    - agent_id: local-master
+      target:
+        channel: cli
+        peer_id: cli-user
+        to_type: ""
+
+cron:
+  enabled: false
+  path: workspace/CRON.json
+
+intelligence:
+  embedding:
+    enabled: false
+    provider: openai_compatible
+    base_url: ""
+    api_key: ""
+    model: ""
+  plugins:
+    skill_roots: []
+    disabled_skills: []
+    disabled_plugins: []
+
+channels:
+  cli:
+    enabled: true
+  feishu:
+    enabled: false
+    account_id: feishu-primary
+    app_id: ""
+    app_secret: ""
+    bot_open_id: ""
+    require_mention: true
+    is_lark: false
+
+agents:
+  - id: local-master
+    name: 本地主控 Agent
+    role: master
+    description: 负责接收外部消息、判断任务类型，并把任务分配给合适的子 Agent。
+    tools: [list_files, read_file, write_file, edit_file, memory_write, memory_search]
+    intelligence:
+      enabled: true
+      prompt_mode: full
+      memory_top_k: 3
+    children:
+      - agent_id: coder-agent
+        name: 代码专家
+        description: 负责 Go、架构、代码实现和 Debug。
+      - agent_id: writer-agent
+        name: 文档专家
+        description: 负责文档、总结和表达优化。
+
+  - id: coder-agent
+    name: 代码专家
+    role: specialist
+    description: 负责 Go、架构、代码实现和 Debug。
+    tools: [list_files, read_file, write_file, edit_file, memory_write, memory_search]
+    intelligence:
+      enabled: true
+      prompt_mode: full
+      memory_top_k: 3
+
+  - id: writer-agent
+    name: 文档专家
+    role: specialist
+    description: 负责文档、总结和表达优化。
+    tools: [list_files, read_file, write_file, edit_file, memory_write, memory_search]
+    intelligence:
+      enabled: true
+      prompt_mode: full
+      memory_top_k: 3
+
+bindings:
+  - agent_id: local-master
+    tier: 5
+    match_key: default
+    match_value: "*"
+    priority: 0
+    dm_scope: per-channel-peer
