@@ -1,0 +1,28 @@
+# macOS / editors
+.DS_Store
+.idea/
+.vscode/
+
+# Local environment and secrets
+.env
+.env.*
+configs/dev.yaml
+configs/*.local.yaml
+
+# Go build artifacts
+aihelper
+bin/
+dist/
+*.test
+coverage.out
+
+# Runtime state
+workspace/aihelper.db
+workspace/*.db
+workspace/delivery-queue/
+workspace/session-exports/
+workspace/logs/
+workspace/agents/*/memory/
+
+# Local reference checkout
+claw0/
