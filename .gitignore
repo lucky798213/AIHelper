@@ -10,7 +10,7 @@ configs/dev.yaml
 configs/*.local.yaml
 
 # Go build artifacts
-aihelper
+/aihelper
 bin/
 dist/
 *.test
