@@ -169,7 +169,6 @@ channels:
 .
 ├── cmd/aihelper/              程序入口，负责加载配置并启动应用
 ├── configs/                   示例配置文件
-├── docs/                      架构说明、学习笔记和面试问答
 ├── internal/agent/            Agent 定义、master/specialist 分发和工具循环
 ├── internal/app/              应用组装、消息主循环、CLI 命令和后台服务接线
 ├── internal/channels/         通道抽象与 CLI、飞书/Lark 实现
@@ -185,12 +184,6 @@ channels:
 ├── internal/tools/            文件工具、记忆工具和工具注册表
 └── workspace/agents/          默认 Agent 工作区模板
 ```
-
-## 文档
-
-- [Go 架构调研与设计建议](docs/claw0-go-architecture.md)
-- [claw0 Go 学习文档](docs/claw0-go-learning-guide.md)
-- [AIHelper 面试问答](docs/aihelper-interview-qa.md)
 
 ## 安全说明
 
